@@ -2,6 +2,7 @@ const supertest = require('supertest');
 const app = require('../app');
 const request = supertest(app);
 
+//test suite in BDD format
 describe('POST /login', () => {
     it('should return user data for valid credentials', async() => {
         const res = await request

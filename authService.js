@@ -1,3 +1,4 @@
+//mock firebase 
 function fakeFirebaseLogin(email, password) {
   return new Promise((resolve, reject) => {
     if (email === 'test@email.com' && password === 'password123') {
