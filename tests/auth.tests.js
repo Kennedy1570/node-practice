@@ -1,10 +1,16 @@
+jest.mock('../authService');
 const supertest = require('supertest');
 const app = require('../app');
 const request = supertest(app);
+const { fakeFirebaseLogin } = require('../authService')
 
 //test suite in BDD format
 describe('POST /login', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    })
     it('should return user data for valid credentials', async() => {
+        fakeFirebaseLogin.mockResolvedValue({uid:'123', email:'test@email.com'})
         const res = await request
         .post('/login')
         .send({ email: 'test@email.com', password: 'password123' });
@@ -12,6 +18,7 @@ describe('POST /login', () => {
         expect(res.body.uid).toBeDefined();
     });
     it('should return 401 for invalid credentials', async() => {
+        fakeFirebaseLogin.mockRejectedValue(new Error('Invalid Credentials'))
         const res = await request
         .post('/login')
         .send({ email: 'invalid@email.com', password: 'wrongpassword' });
